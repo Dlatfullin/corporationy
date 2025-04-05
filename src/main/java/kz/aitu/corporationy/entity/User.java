@@ -27,6 +27,12 @@ public class User {
     private String username;
     private String password;
     private String role;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Like> likes = new ArrayList<>();
     @OneToMany(mappedBy = "user")
     private List<Token> tokens = new ArrayList<>();
     @CreationTimestamp
