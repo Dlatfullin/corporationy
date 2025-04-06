@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(AlreadyExistsException.class)
-    public ResponseEntity<ApiError<String>> handleBadCredentialsException(final WebRequest request,
+    public ResponseEntity<ApiError<String>> handleAlreadyExistsException(final WebRequest request,
                                                                           final AlreadyExistsException exception) {
         return handleThrowable(request, HttpStatus.CONFLICT, exception);
     }
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ApiError<String>> handleBadCredentialsException(final WebRequest request,
+    public ResponseEntity<ApiError<String>> handleEntityNotFoundException(final WebRequest request,
                                                                           final EntityNotFoundException exception) {
         return handleThrowable(request, HttpStatus.NOT_FOUND, exception);
     }

@@ -40,8 +40,8 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/api/v1/**",
-                                "/api/v1/auth/register", "/api/v1/auth/login"
+                                "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+                                "/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/posts"
                         )
                         .permitAll()
                         .anyRequest().fullyAuthenticated())
