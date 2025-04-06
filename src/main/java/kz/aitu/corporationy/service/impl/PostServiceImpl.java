@@ -7,9 +7,9 @@ import kz.aitu.corporationy.dto.PostResponse;
 import kz.aitu.corporationy.entity.Post;
 import kz.aitu.corporationy.entity.User;
 import kz.aitu.corporationy.mapper.PostMapper;
+import kz.aitu.corporationy.repository.LikeRepository;
 import kz.aitu.corporationy.repository.PostRepository;
 import kz.aitu.corporationy.repository.UserRepository;
-import kz.aitu.corporationy.service.LikeService;
 import kz.aitu.corporationy.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,7 +26,7 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private final LikeService likeService;
+    private final LikeRepository likeRepository;
     private final PostMapper postMapper;
     private final UserRepository userRepository;
 
@@ -43,14 +43,14 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse getPost(Long id) {
         Post post = getPostById(id);
-        return postMapper.toPostResponse(post, likeService.getLikeCountForPost(id));
+        return postMapper.toPostResponse(post, likeRepository.countByPostId(id));
     }
 
     @Override
     public List<PostResponse> getPosts(Pageable pageable) {
         Page<Post> posts = postRepository.findAll(pageable);
         return posts.stream()
-                .map(post -> postMapper.toPostResponse(post, likeService.getLikeCountForPost(post.getId())))
+                .map(post -> postMapper.toPostResponse(post, likeRepository.countByPostId(post.getId())))
                 .toList();
     }
 
@@ -60,7 +60,7 @@ public class PostServiceImpl implements PostService {
         Post post = getPostById(id);
         validatePermission(post, authenticatedUser);
         postMapper.updatePost(post, request);
-        return postMapper.toPostResponse(post, likeService.getLikeCountForPost(post.getId()));
+        return postMapper.toPostResponse(post, likeRepository.countByPostId(id));
     }
 
     @Override
