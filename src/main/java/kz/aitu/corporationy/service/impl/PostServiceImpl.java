@@ -71,6 +71,11 @@ public class PostServiceImpl implements PostService {
         postRepository.deleteById(id);
     }
 
+    public Post getPostById(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Post with id %s not found".formatted(id)));
+    }
+
     private void validatePermission(Post post, AuthenticatedUser authenticatedUser) {
         boolean isAdmin = authenticatedUser.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
@@ -78,10 +83,5 @@ public class PostServiceImpl implements PostService {
         if (!isOwner && !isAdmin) {
             throw new AccessDeniedException("You do not have permission to modify this post.");
         }
-    }
-
-    private Post getPostById(Long id) {
-        return postRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Post with id %s not found".formatted(id)));
     }
 }
