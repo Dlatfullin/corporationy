@@ -32,6 +32,8 @@ public class Post {
     private List<Comment> comments = new ArrayList<>();
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Image> images = new ArrayList<>();
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp
