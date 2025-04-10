@@ -35,6 +35,10 @@ public class User {
     private List<Like> likes = new ArrayList<>();
     @OneToMany(mappedBy = "user")
     private List<Token> tokens = new ArrayList<>();
+    @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL)
+    private List<Subscription> subscriptions = new ArrayList<>();
+    @OneToMany(mappedBy = "target", cascade = CascadeType.ALL)
+    private List<Subscription> followers = new ArrayList<>();
     @CreationTimestamp
     private LocalDateTime createdAt;
     @UpdateTimestamp

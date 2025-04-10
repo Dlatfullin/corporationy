@@ -13,7 +13,11 @@ public interface UserMapper {
 
     AuthenticatedUser toAuthenticatedUser(User user);
 
+    @Mapping(target = "followers", ignore = true)
     UserResponse toUserResponse(User user);
+
+    @Mapping(target = "followers", source = "numberOfFollowers", defaultValue = "0")
+    UserResponse toUserResponse(User user, int numberOfFollowers);
 
     @Mapping(target = "password", source = "password")
     @Mapping(target = "role", constant = "ROLE_USER")
