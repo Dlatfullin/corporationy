@@ -7,6 +7,7 @@ import kz.aitu.corporationy.exception.AlreadyExistsException;
 import kz.aitu.corporationy.mapper.UserMapper;
 import kz.aitu.corporationy.repository.UserRepository;
 import kz.aitu.corporationy.service.AuthService;
+import kz.aitu.corporationy.service.SubscriptionService;
 import kz.aitu.corporationy.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +26,7 @@ public class AuthServiceImpl implements AuthService {
     private final TokenService tokenService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final SubscriptionService subscriptionService;
 
     @Override
     public UserResponse registration(RegistrationRequest request) {
@@ -51,6 +53,7 @@ public class AuthServiceImpl implements AuthService {
     public UserResponse getAuthenticatedUser(AuthenticatedUser authenticatedUser) {
         User user = userRepository.findByUsername(authenticatedUser.getUsername())
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
-        return userMapper.toUserResponse(user);
+        int numberOfFollowers = subscriptionService.getCountFollowers(user.getId());
+        return userMapper.toUserResponse(user, numberOfFollowers);
     }
 }
