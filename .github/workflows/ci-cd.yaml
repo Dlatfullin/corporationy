@@ -87,3 +87,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Generate docker-compose.yml with secrets
+        run: |
+          cat <<EOF > docker-compose.yml
+
+          services:
+            backend:
+              image: ${{ secrets.IMAGE_NAME }}
+              deploy:
+                replicas: 1
+                placement:
+                  constraints:
+                    - node.hostname == docker-node-2
+              ports:
+                - "8080:8080"
+              environment:
+                DB_HOST: ${{ secrets.DB_HOST }}
+                DB_PORT: ${{ secrets.DB_PORT }}
+                DB_NAME: ${{ secrets.DB_NAME }}
+                DB_USERNAME: ${{ secrets.DB_USERNAME }}
+                DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          EOF
+
+      - name: Deploy to Docker Swarm
+        run: docker stack deploy -c docker-compose.yml corporationy
