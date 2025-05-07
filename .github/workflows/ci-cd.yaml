@@ -13,6 +13,27 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:14
+        ports: [5432:5432]
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_NAME: testdb
+      DB_USERNAME: testuser
+      DB_PASSWORD: testpass
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -28,6 +49,7 @@ jobs:
 
       - name: Run tests
         run: ./gradlew test
+
 
   build:
     name: Build & Push Docker Image
