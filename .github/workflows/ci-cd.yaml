@@ -55,6 +55,7 @@ jobs:
     name: Build & Push Docker Image
     runs-on: self-hosted
     needs: test
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
 
     services:
       postgres:
