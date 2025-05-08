@@ -128,8 +128,8 @@ jobs:
               deploy:
                 replicas: 1
                 placement:
-                  constraints:
-                    - node.hostname == docker-node-2
+                  preferences:
+                    - spread: docker-node-2
               ports:
                 - "8080:8080"
               environment:
