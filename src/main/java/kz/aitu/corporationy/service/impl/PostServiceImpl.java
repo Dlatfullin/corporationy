@@ -55,6 +55,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<PostResponse> getPosts(Long userId, Pageable pageable) {
+        Page<Post> posts = postRepository.findByUserId(userId, pageable);
+        return posts.stream()
+                .map(post -> postMapper.toPostResponse(post, likeRepository.countByPostId(post.getId())))
+                .toList();
+    }
+
+    @Override
     @Transactional
     public PostResponse updatePost(Long id, PostRequest request, AuthenticatedUser authenticatedUser) {
         Post post = getPostById(id);

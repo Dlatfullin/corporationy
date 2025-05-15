@@ -16,6 +16,8 @@ public interface PostService {
 
     List<PostResponse> getPosts(Pageable pageable);
 
+    List<PostResponse> getPosts(Long userId, Pageable pageable);
+
     PostResponse updatePost(Long id, PostRequest request, AuthenticatedUser authenticatedUser);
 
     void deletePost(Long id, AuthenticatedUser authenticatedUser);
