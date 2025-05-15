@@ -66,8 +66,8 @@ public class PostController {
         return postService.getPosts(pageable);
     }
 
-    @Operation(summary = "Get a list of posts", description = "Retrieves a list of posts.")
-    @GetMapping(path = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Get a list of posts by UserId", description = "Retrieves a list of posts.")
+    @GetMapping(path = "/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PageableAsQueryParam
     public List<PostResponse> getPosts(@PathVariable Long userId,
                                        @Parameter(hidden = true) Pageable pageable) {
